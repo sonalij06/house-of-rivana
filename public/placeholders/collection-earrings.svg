@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#271f26"/>
+      <stop offset="100%" stop-color="#3b2f39"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#bg)"/>
+  <rect width="900" height="1200" fill="url(#glow)"/>
+  <rect x="24" y="24" width="852" height="1152" fill="none" stroke="#c9a962" stroke-opacity="0.35" stroke-width="1.5"/>
+  <g transform="translate(450 600) rotate(4) scale(1.3113) translate(-200 -200)"
+     fill="none" stroke="#e2cdd6" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.82">
+    <style>.accent{stroke:#c9a962;stroke-opacity:0.95}</style>
+    
+    <circle cx="140" cy="118" r="11" />
+    <path d="M140 129 C 140 176, 112 186, 112 220 a28 28 0 0 0 56 0 C 168 186, 140 176, 140 129z" class="accent" />
+    <circle cx="260" cy="118" r="11" />
+    <path d="M260 129 C 260 176, 232 186, 232 220 a28 28 0 0 0 56 0 C 288 186, 260 176, 260 129z" class="accent" />
+  </g>
+</svg>

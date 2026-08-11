@@ -1,0 +1,7 @@
+.data
+e2e
+playwright-report
+test-results
+coverage
+*.md
+!README.md

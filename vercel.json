@@ -1,0 +1,21 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "regions": ["bom1"],
+  "installCommand": "npm install",
+  "buildCommand": "npm run vercel-build",
+  "crons": [
+    {
+      "path": "/api/cron/release-holds",
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/cron/review-requests",
+      "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/sync-shipments",
+      "schedule": "*/30 * * * *"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: rivana-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rivana
+      POSTGRES_PASSWORD: rivana
+      POSTGRES_DB: rivana
+    ports:
+      - "5433:5432"
+    volumes:
+      # Persists across container recreate / compose down (not removed by -v).
+      - ./.data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rivana -d rivana"]
+      interval: 5s
+      timeout: 5s
+      retries: 10

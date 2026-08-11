@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#faf8f5"/>
+      <stop offset="100%" stop-color="#efe7db"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#bg)"/>
+  <rect width="1000" height="1000" fill="url(#glow)"/>
+  <rect x="24" y="24" width="952" height="952" fill="none" stroke="#c9a962" stroke-opacity="0.35" stroke-width="1.5"/>
+  <g transform="translate(500 500) rotate(0) scale(1.6430000000000002) translate(-200 -200)"
+     fill="none" stroke="#8b6914" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.82">
+    <style>.accent{stroke:#c9a962;stroke-opacity:0.95}</style>
+    
+    <circle cx="146" cy="200" r="46" />
+    <circle cx="146" cy="200" r="20" class="accent" />
+    <circle cx="254" cy="200" r="46" />
+    <circle cx="254" cy="200" r="20" class="accent" />
+  </g>
+</svg>

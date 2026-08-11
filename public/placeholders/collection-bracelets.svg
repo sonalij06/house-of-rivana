@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e251f"/>
+      <stop offset="100%" stop-color="#333d33"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#bg)"/>
+  <rect width="900" height="1200" fill="url(#glow)"/>
+  <rect x="24" y="24" width="852" height="1152" fill="none" stroke="#c9a962" stroke-opacity="0.35" stroke-width="1.5"/>
+  <g transform="translate(450 600) rotate(-8) scale(1.3113) translate(-200 -200)"
+     fill="none" stroke="#cfd6b8" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.82">
+    <style>.accent{stroke:#c9a962;stroke-opacity:0.95}</style>
+    
+    <ellipse cx="200" cy="200" rx="112" ry="70" />
+    <ellipse cx="200" cy="200" rx="88" ry="50" />
+    <circle cx="88" cy="200" r="13" class="accent" />
+    <circle cx="312" cy="200" r="13" class="accent" />
+  </g>
+</svg>

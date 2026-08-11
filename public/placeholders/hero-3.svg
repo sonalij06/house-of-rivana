@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7ece9"/>
+      <stop offset="100%" stop-color="#e9d9d4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+  <rect x="24" y="24" width="1552" height="852" fill="none" stroke="#c9a962" stroke-opacity="0.35" stroke-width="1.5"/>
+  <g transform="translate(800 450) rotate(4) scale(1.3113) translate(-200 -200)"
+     fill="none" stroke="#8a5a49" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.82">
+    <style>.accent{stroke:#c9a962;stroke-opacity:0.95}</style>
+    
+    <ellipse cx="200" cy="250" rx="70" ry="72" />
+    <ellipse cx="200" cy="250" rx="55" ry="57" />
+    <path d="M160 140 h80 l-40 56z" class="accent" />
+    <path d="M160 140 l40 20 40-20" class="accent" />
+  </g>
+</svg>

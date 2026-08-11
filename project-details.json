@@ -1,0 +1,56 @@
+{
+  "brand": {
+    "name": "House of Rivana",
+    "tagline": "Fashion jewellery, made to be worn",
+    "description": "An artificial fashion jewellery brand — plated finishes, CZ and AD stones, bridal edits and everyday pieces sold directly online.",
+    "founded": "2024",
+    "location": "Jaipur, India"
+  },
+  "contact": {
+    "email": "care@houseofrivana.com",
+    "phone": "+91 90000 00000",
+    "address": {
+      "street": "12 Amrapali Marg, C-Scheme",
+      "city": "Jaipur",
+      "state": "Rajasthan",
+      "postalCode": "302001",
+      "country": "India"
+    },
+    "social": {
+      "instagram": "https://www.instagram.com/house_of_rivana/",
+      "facebook": "https://facebook.com/houseofrivana",
+      "pinterest": "https://pinterest.com/houseofrivana",
+      "whatsapp": "+919000000000"
+    }
+  },
+  "site": {
+    "domain": "houseofrivana.com",
+    "currency": "INR",
+    "locale": "en-IN",
+    "pages": [
+      "home",
+      "shop",
+      "collections",
+      "about",
+      "contact",
+      "cart",
+      "checkout",
+      "account",
+      "admin"
+    ]
+  },
+  "commerce": {
+    "upiPayeeName": "House of Rivana",
+    "upiVpa": "houseofrivana@upi",
+    "freeShippingThresholdRupees": 2500,
+    "flatShippingRateRupees": 99,
+    "gstPercent": 3,
+    "paymentHoldMinutes": 45,
+    "activePaymentProvider": "MANUAL_UPI"
+  },
+  "notes": [
+    "Money is persisted as integer paise across the database.",
+    "GST for imitation jewellery (HSN 7117) is commonly 3 percent and is shown as inclusive — confirm with your CA before go-live.",
+    "Replace upiVpa and the contact details from /admin/settings before going live."
+  ]
+}
