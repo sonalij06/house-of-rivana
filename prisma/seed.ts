@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
+import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { hashPassword } from "better-auth/crypto";
 import { PrismaClient } from "../src/generated/prisma/client.js";
@@ -19,10 +20,27 @@ import {
   reviews,
 } from "./seed-data.js";
 
-const adapter = new PrismaPg({
-  connectionString: process.env.DIRECT_URL ?? process.env.DATABASE_URL,
+const rawUrl = process.env.DIRECT_URL ?? process.env.DATABASE_URL;
+if (!rawUrl) {
+  throw new Error("Set DIRECT_URL or DATABASE_URL before seeding.");
+}
+const isLocal = /localhost|127\.0\.0\.1/.test(rawUrl);
+const connectionString = (() => {
+  try {
+    const url = new URL(rawUrl);
+    url.searchParams.delete("sslmode");
+    url.searchParams.delete("uselibpqcompat");
+    return url.toString();
+  } catch {
+    return rawUrl;
+  }
+})();
+const pool = new Pool({
+  connectionString,
+  max: 5,
+  ssl: isLocal ? undefined : { rejectUnauthorized: false },
 });
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient({ adapter: new PrismaPg(pool) });
 
 const rupees = (value: number) => Math.round(value * 100);
 
@@ -895,4 +913,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    await pool.end();
   });

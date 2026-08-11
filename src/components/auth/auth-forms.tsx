@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 import { motion } from "motion/react";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { completeSignIn } from "@/app/actions/auth";
 import {
@@ -16,6 +16,88 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox, Field, Input } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
+import { cn } from "@/lib/utils";
+
+function GoogleGlyph({ className }: { className?: string }) {
+  return (
+    <svg
+      className={cn("size-4 shrink-0", className)}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      <path
+        fill="#EA4335"
+        d="M12 10.2v3.6h5.1c-.2 1.2-1.5 3.6-5.1 3.6-3.1 0-5.6-2.5-5.6-5.6S8.9 6.2 12 6.2c1.8 0 2.9.7 3.6 1.4l2.4-2.4C16.7 3.9 14.6 3 12 3 7 3 3 7 3 12s4 9 9 9c5.2 0 8.6-3.6 8.6-8.7 0-.6-.1-1-.1-1.5H12z"
+      />
+      <path
+        fill="#4285F4"
+        d="M23.5 12.3c0-.6-.1-1-.1-1.5H12v3.6h5.1c-.2 1.1-.9 2.4-1.9 3.1v2.6h3.1c1.8-1.7 2.9-4.2 2.9-7.8z"
+        opacity=".85"
+      />
+      <path
+        fill="#FBBC05"
+        d="M6.4 14.3A5.4 5.4 0 0 1 6.1 12c0-.8.1-1.6.4-2.3L3.3 7.1A8.9 8.9 0 0 0 3 12c0 1.4.3 2.8.9 4l2.5-1.7z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 21c2.4 0 4.5-.8 6-2.2l-2.9-2.3c-.8.6-1.9.9-3.1.9-2.4 0-4.4-1.6-5.1-3.8L3.9 16A9 9 0 0 0 12 21z"
+      />
+    </svg>
+  );
+}
+
+function PasswordInput({
+  id,
+  value,
+  onChange,
+  autoComplete,
+  placeholder,
+  required,
+  minLength,
+  className,
+}: {
+  id?: string;
+  value: string;
+  onChange: (value: string) => void;
+  autoComplete?: string;
+  placeholder?: string;
+  required?: boolean;
+  minLength?: number;
+  className?: string;
+}) {
+  const [visible, setVisible] = useState(false);
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+
+  return (
+    <div className="relative">
+      <Input
+        id={inputId}
+        type={visible ? "text" : "password"}
+        autoComplete={autoComplete}
+        required={required}
+        minLength={minLength}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className={cn("pr-11", className)}
+      />
+      <button
+        type="button"
+        className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:text-ink"
+        onClick={() => setVisible((v) => !v)}
+        aria-label={visible ? "Hide password" : "Show password"}
+        aria-pressed={visible}
+      >
+        {visible ? (
+          <EyeOff className="size-4" strokeWidth={1.6} />
+        ) : (
+          <Eye className="size-4" strokeWidth={1.6} />
+        )}
+      </button>
+    </div>
+  );
+}
 
 function GoogleButton({ callbackURL }: { callbackURL: string }) {
   const [isPending, startTransition] = useTransition();
@@ -31,7 +113,7 @@ function GoogleButton({ callbackURL }: { callbackURL: string }) {
         })
       }
     >
-      {isPending ? <Spinner /> : null}
+      {isPending ? <Spinner /> : <GoogleGlyph />}
       Continue with Google
     </Button>
   );
@@ -160,6 +242,13 @@ export function LoginForm({
         </p>
       ) : null}
 
+      {googleEnabled && !adminMode ? (
+        <>
+          <GoogleButton callbackURL={next} />
+          <Divider />
+        </>
+      ) : null}
+
       <form onSubmit={submit} className="space-y-4" noValidate>
         <Field label="Email" htmlFor="email" required>
           <Input
@@ -174,13 +263,12 @@ export function LoginForm({
         </Field>
 
         <Field label="Password" htmlFor="password" required error={error}>
-          <Input
+          <PasswordInput
             id="password"
-            type="password"
             autoComplete="current-password"
             required
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={setPassword}
             placeholder="••••••••"
           />
         </Field>
@@ -206,13 +294,6 @@ export function LoginForm({
           Sign in
         </Button>
       </form>
-
-      {googleEnabled && !adminMode ? (
-        <>
-          <Divider />
-          <GoogleButton callbackURL={next} />
-        </>
-      ) : null}
     </>
   );
 }
@@ -287,6 +368,13 @@ export function RegisterForm({ googleEnabled }: { googleEnabled: boolean }) {
         }
       />
 
+      {googleEnabled ? (
+        <>
+          <GoogleButton callbackURL={next} />
+          <Divider />
+        </>
+      ) : null}
+
       <form onSubmit={submit} className="space-y-4" noValidate>
         <Field label="Full name" htmlFor="name" required>
           <Input
@@ -333,14 +421,13 @@ export function RegisterForm({ googleEnabled }: { googleEnabled: boolean }) {
           error={error}
           hint="At least eight characters."
         >
-          <Input
+          <PasswordInput
             id="password"
-            type="password"
             autoComplete="new-password"
             required
             minLength={8}
             value={form.password}
-            onChange={(e) => update("password", e.target.value)}
+            onChange={(value) => update("password", value)}
             placeholder="••••••••"
           />
         </Field>
@@ -359,13 +446,6 @@ export function RegisterForm({ googleEnabled }: { googleEnabled: boolean }) {
           Create account
         </Button>
       </form>
-
-      {googleEnabled ? (
-        <>
-          <Divider />
-          <GoogleButton callbackURL={next} />
-        </>
-      ) : null}
     </>
   );
 }
@@ -500,24 +580,22 @@ export function ResetPasswordForm() {
       />
       <form onSubmit={submit} className="space-y-4" noValidate>
         <Field label="New password" htmlFor="password" required>
-          <Input
+          <PasswordInput
             id="password"
-            type="password"
             autoComplete="new-password"
             required
             minLength={8}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={setPassword}
           />
         </Field>
         <Field label="Confirm password" htmlFor="confirm" required error={error}>
-          <Input
+          <PasswordInput
             id="confirm"
-            type="password"
             autoComplete="new-password"
             required
             value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
+            onChange={setConfirm}
           />
         </Field>
         <Button type="submit" block disabled={isPending}>

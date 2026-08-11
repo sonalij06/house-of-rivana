@@ -1,7 +1,14 @@
 .data
+.next
+node_modules
+.git
+screenshots
 e2e
 playwright-report
 test-results
 coverage
+.env
+.env.*
+!.env.example
 *.md
 !README.md

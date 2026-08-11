@@ -177,21 +177,22 @@ export function productSearchClauses(
   const { includeDescription = true } = options;
   const terms = expandSearchTerms(query);
   return terms.flatMap((term) => {
-    const clauses = [
-      { name: { contains: term, mode: "insensitive" as const } },
-      { shortDescription: { contains: term, mode: "insensitive" as const } },
-      { gemstone: { contains: term, mode: "insensitive" as const } },
+    const mode = "insensitive" as const;
+    const clauses: Array<Record<string, unknown>> = [
+      { name: { contains: term, mode } },
+      { shortDescription: { contains: term, mode } },
+      { gemstone: { contains: term, mode } },
       {
         collections: {
           some: {
-            collection: { name: { contains: term, mode: "insensitive" as const } },
+            collection: { name: { contains: term, mode } },
           },
         },
       },
     ];
     if (includeDescription) {
       clauses.splice(2, 0, {
-        description: { contains: term, mode: "insensitive" as const },
+        description: { contains: term, mode },
       });
     }
     return clauses;
