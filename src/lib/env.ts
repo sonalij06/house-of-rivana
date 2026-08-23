@@ -51,10 +51,23 @@ const serverSchema = z.object({
   SHIPROCKET_PICKUP_PINCODE: z.string().default("302001"),
   /** Shared secret Shiprocket sends as `x-api-key` on tracking webhooks. */
   SHIPROCKET_WEBHOOK_TOKEN: z.string().optional(),
+
+  /** Self-hosted or SaaS Sentry DSN (server). Prefer NEXT_PUBLIC for browser. */
+  SENTRY_DSN: z.string().optional(),
+  NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
+  SENTRY_ENVIRONMENT: z.string().default("local-docker"),
+  SENTRY_TRACES_SAMPLE_RATE: z.string().optional(),
+  /** When true, exposes /sentry-test probes (local coverage only). */
+  SENTRY_ENABLE_TEST_PAGE: z
+    .enum(["true", "false", "1", "0"])
+    .optional()
+    .transform((v) => v === "true" || v === "1"),
 });
 
 function emptyToUndefined(value: string | undefined) {
-  return value === undefined || value.trim() === "" ? undefined : value;
+  if (value === undefined) return undefined;
+  const trimmed = value.trim();
+  return trimmed === "" ? undefined : trimmed;
 }
 
 const raw = {
@@ -101,6 +114,17 @@ const raw = {
   SHIPROCKET_WEBHOOK_TOKEN: emptyToUndefined(
     process.env.SHIPROCKET_WEBHOOK_TOKEN,
   ),
+  SENTRY_DSN: emptyToUndefined(process.env.SENTRY_DSN),
+  NEXT_PUBLIC_SENTRY_DSN: emptyToUndefined(
+    process.env.NEXT_PUBLIC_SENTRY_DSN,
+  ),
+  SENTRY_ENVIRONMENT: emptyToUndefined(process.env.SENTRY_ENVIRONMENT),
+  SENTRY_TRACES_SAMPLE_RATE: emptyToUndefined(
+    process.env.SENTRY_TRACES_SAMPLE_RATE,
+  ),
+  SENTRY_ENABLE_TEST_PAGE: emptyToUndefined(
+    process.env.SENTRY_ENABLE_TEST_PAGE,
+  ),
 };
 
 const parsed = serverSchema.safeParse(raw);
@@ -129,4 +153,6 @@ export const features = {
   whatsapp: Boolean(env.WHATSAPP_PHONE_NUMBER_ID && env.WHATSAPP_ACCESS_TOKEN),
   googleAuth: Boolean(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET),
   shiprocket: Boolean(env.SHIPROCKET_EMAIL && env.SHIPROCKET_PASSWORD),
+  sentry: Boolean(env.SENTRY_DSN || env.NEXT_PUBLIC_SENTRY_DSN),
+  sentryTestPage: env.SENTRY_ENABLE_TEST_PAGE === true,
 } as const;
