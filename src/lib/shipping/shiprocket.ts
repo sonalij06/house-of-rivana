@@ -241,6 +241,8 @@ export async function checkServiceability(input: {
         rate: number;
         etd?: string;
         estimated_delivery_days?: string | number;
+        /** Shiprocket also returns delivery estimate in hours — more precise than day count. */
+        etd_hours?: number | string;
       }>;
     };
     message?: string;
@@ -256,17 +258,37 @@ export async function checkServiceability(input: {
   const companies = payload.data?.available_courier_companies ?? [];
   return companies
     .map((c) => {
-      const days =
+      // Prefer etd_hours for accuracy (e.g. 91 hours ≈ 3.8 days); fall back to estimated_delivery_days.
+      const daysFromHours =
+        c.etd_hours !== undefined && c.etd_hours !== ""
+          ? Math.ceil(Number(c.etd_hours) / 24)
+          : null;
+      const daysRaw =
         c.estimated_delivery_days === undefined || c.estimated_delivery_days === ""
           ? null
           : Number(c.estimated_delivery_days);
+      const estimatedDays =
+        daysFromHours != null && Number.isFinite(daysFromHours)
+          ? daysFromHours
+          : Number.isFinite(daysRaw)
+          ? daysRaw
+          : null;
+
+      // Try parsing the etd string first; if absent, derive from estimatedDays.
+      let etdDate = parseShiprocketDate(c.etd);
+      if (!etdDate && estimatedDays != null) {
+        const d = new Date();
+        d.setDate(d.getDate() + estimatedDays);
+        etdDate = d;
+      }
+
       return {
         courierId: c.courier_company_id,
         courierName: c.courier_name,
         rate: c.rate,
         etd: c.etd ?? null,
-        etdDate: parseShiprocketDate(c.etd),
-        estimatedDays: Number.isFinite(days) ? days : null,
+        etdDate,
+        estimatedDays,
       };
     })
     .sort((a, b) => a.rate - b.rate);
